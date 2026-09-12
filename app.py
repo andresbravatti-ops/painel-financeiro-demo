@@ -209,51 +209,67 @@ with col_tit3:
 st.markdown("Acompanhe o orçamento do mês e gerencie seus objetivos estratégicos de investimento.")
 
 # =====================================================================
-# 10. BOTÃO DE ENVIO DO RELATÓRIO COMPLETO PARA O TELEGRAM
+# 10. BLOCO DE IDENTIFICAÇÃO E ENVIO DO RELATÓRIO PARA O TELEGRAM
 # =====================================================================
-if st.button("🤖 Enviar Relatório Financeiro Completo para o Telegram"):
-    rend = total_rendimentos_geral
-    desp = total_despesas_geral
-    sobra = sobra_mes_geral
-    
-    teto_alim_envio = st.session_state.get("teto_alim", 2500.0)
-    teto_comb_envio = st.session_state.get("teto_comb", 1200.0)
-    
-    saldo_alim = teto_alim_envio - total_alim
-    saldo_comb = teto_comb_envio - total_comb
-    
-    p_res = st.session_state.get("slider_reserva", 50)
-    p_cur = st.session_state.get("slider_curto", 20)
-    p_med = st.session_state.get("slider_medio", 10)
-    p_lon = st.session_state.get("slider_longo", 20)
-    
-    v_res_envio = sobra * (p_res / 100) if sobra > 0 else 0.0
-    v_cur_envio = sobra * (p_cur / 100) if sobra > 0 else 0.0
-    v_med_envio = sobra * (p_med / 100) if sobra > 0 else 0.0
-    v_lon_envio = sobra * (p_lon / 100) if sobra > 0 else 0.0
-    
-    mensagem_relatorio = (
-        "RELATORIO FINANCEIRO DA DEMO\n\n"
-        f"Rendimentos: R$ {rend:,.2f}\n"
-        f"Despesas Totais: R$ {desp:,.2f}\n"
-        f"Sobra para Investir: R$ {sobra:,.2f}\n\n"
-        "--- DISTRIBUIÇÃO DE APORTES ---\n"
-        f"• Reserva ({p_res}%): R$ {v_res_envio:,.2f}\n"
-        f"• Curto Prazo ({p_cur}%): R$ {v_cur_envio:,.2f}\n"
-        f"• Médio Prazo ({p_med}%): R$ {v_med_envio:,.2f}\n"
-        f"• Longo Prazo ({p_lon}%): R$ {v_lon_envio:,.2f}\n\n"
-        "--- CONTROLE DE VARIÁVEIS ---\n"
-        f"Total Variáveis: R$ {total_variaveis:,.2f}\n"
-        f"• Alimentação: R$ {total_alim:,.2f} (Saldo disp: R$ {saldo_alim:,.2f})\n"
-        f"• Combustível: R$ {total_comb:,.2f} (Saldo disp: R$ {saldo_comb:,.2f})\n"
-        f"• Outros: R$ {total_outros_var:,.2f}"
-    )
-    
-    sucesso = enviar_alerta_telegram(mensagem_relatorio)
-    if sucesso:
-        st.success("Relatório completo enviado com sucesso para o seu Telegram!")
+st.write("---")
+st.write("### 🤖 Enviar Simulação Realizada")
+col_tel1, col_tel2 = st.columns([2, 1])
+
+with col_tel1:
+    nome_participante = st.text_input("Digite seu Nome ou Apelido para registrar o teste:", placeholder="Ex: João da Silva", key="input_nome_participante")
+
+with col_tel2:
+    st.write("")
+    st.write("")
+    btn_enviar_tel = st.button("Enviar Relatório p/ Teste")
+
+if btn_enviar_tel:
+    if not nome_participante.strip():
+        st.warning("⚠️ Por favor, digite o seu nome antes de enviar o relatório.")
     else:
-        st.error("Erro ao enviar. Verifique o console.")
+        rend = total_rendimentos_geral
+        desp = total_despesas_geral
+        sobra = sobra_mes_geral
+        
+        teto_alim_envio = st.session_state.get("teto_alim", 2500.0)
+        teto_comb_envio = st.session_state.get("teto_comb", 1200.0)
+        
+        saldo_alim = teto_alim_envio - total_alim
+        saldo_comb = teto_comb_envio - total_comb
+        
+        p_res = st.session_state.get("slider_reserva", 50)
+        p_cur = st.session_state.get("slider_curto", 20)
+        p_med = st.session_state.get("slider_medio", 10)
+        p_lon = st.session_state.get("slider_longo", 20)
+        
+        v_res_envio = sobra * (p_res / 100) if sobra > 0 else 0.0
+        v_cur_envio = sobra * (p_cur / 100) if sobra > 0 else 0.0
+        v_med_envio = sobra * (p_med / 100) if sobra > 0 else 0.0
+        v_lon_envio = sobra * (p_lon / 100) if sobra > 0 else 0.0
+        
+        mensagem_relatorio = (
+            f"🎯 *NOVO TESTE RECEBIDO!*\n"
+            f"👤 *Participante:* {nome_participante}\n\n"
+            f"Rendimentos: R$ {rend:,.2f}\n"
+            f"Despesas Totais: R$ {desp:,.2f}\n"
+            f"Sobra para Investir: R$ {sobra:,.2f}\n\n"
+            "--- DISTRIBUIÇÃO DE APORTES ---\n"
+            f"• Reserva ({p_res}%): R$ {v_res_envio:,.2f}\n"
+            f"• Curto Prazo ({p_cur}%): R$ {v_cur_envio:,.2f}\n"
+            f"• Médio Prazo ({p_med}%): R$ {v_med_envio:,.2f}\n"
+            f"• Longo Prazo ({p_lon}%): R$ {v_lon_envio:,.2f}\n\n"
+            "--- CONTROLE DE VARIÁVEIS ---\n"
+            f"Total Variáveis: R$ {total_variaveis:,.2f}\n"
+            f"• Alimentação: R$ {total_alim:,.2f} (Saldo disp: R$ {saldo_alim:,.2f})\n"
+            f"• Combustível: R$ {total_comb:,.2f} (Saldo disp: R$ {saldo_comb:,.2f})\n"
+            f"• Outros: R$ {total_outros_var:,.2f}"
+        )
+        
+        sucesso = enviar_alerta_telegram(mensagem_relatorio)
+        if sucesso:
+            st.success(f"Obrigado, {nome_participante}! Relatório enviado com sucesso.")
+        else:
+            st.error("Erro ao enviar o relatório. Tente novamente.")
 
 st.divider()
 
