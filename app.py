@@ -28,7 +28,7 @@ def fmt_moeda(valor):
     return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 # =====================================================================
-# 3. FUNÇÃO DE RESET (ZERA OS DADOS PARA O PRÓXIMO CLIENTE)
+# 3. FUNÇÃO DE RESET (ZERA OS DADOS PARA O PRÓXIMO TESTE)
 # =====================================================================
 def reiniciar_dados_demo():
     st.session_state.df_rendimentos = pd.DataFrame(columns=["Data", "Mês/Ano", "Origem / Categoria", "Valor (R$)"])
@@ -187,7 +187,7 @@ st.markdown("""
 # =====================================================================
 # 9. CABEÇALHO DO PAINEL, BOTÃO DE PRIVACIDADE E BOTÃO DE RESET (DEMO)
 # =====================================================================
-st.warning("✨ **MODO DEMONSTRAÇÃO INTERATIVO:** Teste os lançamentos à vontade. Ao terminar a call, clique em 'Zerar / Reiniciar Demo' para limpar tudo para o próximo cliente.")
+st.warning("✨ **AMBIENTE DE SIMULAÇÃO INTERATIVO:** Sinta-se à vontade para testar os lançamentos, as projeções e os gráficos em tempo real.")
 
 col_tit1, col_tit2, col_tit3 = st.columns([2.5, 1.2, 1.3])
 with col_tit1:
@@ -201,9 +201,9 @@ with col_tit2:
         st.rerun()
 with col_tit3:
     st.write("")
-    if st.button("🔄 Zerar / Reiniciar Demo"):
+    if st.button("🔄 Reiniciar Demonstração"):
         reiniciar_dados_demo()
-        st.success("Painel zerado com sucesso!")
+        st.success("Painel reiniciado com sucesso!")
         st.rerun()
 
 st.markdown("Acompanhe o orçamento do mês e gerencie seus objetivos estratégicos de investimento.")
